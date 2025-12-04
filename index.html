@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 107, 157, 0.5);
+            transform: rotate(45deg);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 107, 157, 0.5);
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            left: -10px;
+        }
+
+        .heart:after {
+            top: -10px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(45deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(45deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .envelope-container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .envelope-container.hidden {
+            opacity: 0;
+            transform: scale(0.5);
+            pointer-events: none;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 350px;
+            height: 250px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 350px;
+            height: 200px;
+            background: linear-gradient(to bottom, #fff 0%, #f9f9f9 100%);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 125px solid #ff6b9d;
+            transform-origin: top center;
+            z-index: 3;
+            top: 0;
+        }
+
+        .envelope-heart {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #ff1744;
+            transform: rotate(45deg);
+            top: 80px;
+            left: 155px;
+            z-index: 4;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .envelope-heart:before,
+        .envelope-heart:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #ff1744;
+            border-radius: 50%;
+        }
+
+        .envelope-heart:before {
+            left: -20px;
+        }
+
+        .envelope-heart:after {
+            top: -20px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: rotate(45deg) scale(1);
+            }
+            50% {
+                transform: rotate(45deg) scale(1.1);
+            }
+        }
+
+        .click-hint {
+            color: white;
+            font-size: 18px;
+            margin-top: 30px;
+            animation: pulse 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Letter full screen */
+        .letter-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 1s ease;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .letter-fullscreen.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .letter-content {
+            max-width: 800px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideIn 1s ease forwards;
+            transform: translateY(50px);
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .letter-content h1 {
+            color: #ff6b9d;
+            font-size: 32px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .letter-content p {
+            color: #333;
+            margin-bottom: 18px;
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .letter-content .signature {
+            margin-top: 30px;
+            font-style: italic;
+            text-align: right;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+            display: none;
+        }
+
+        .music-control.visible {
+            display: block;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        .music-control:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .letter-content {
+                padding: 30px;
+            }
+
+            .letter-content h1 {
+                font-size: 24px;
+            }
+
+            .letter-content p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <script>
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 15 + 's';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <!-- Envelope Container -->
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-flap"></div>
+                <div class="envelope-heart"></div>
+            </div>
+        </div>
+        <p class="click-hint">💌 Click the envelope to open your birthday surprise 💌</p>
+    </div>
+
+    <!-- Full Screen Letter -->
+    <div class="letter-fullscreen" id="letterFullscreen">
+        <div class="letter-content">
+            <h1>HAPPY! HAPPY BIRTHDAY MY LOVE 🎂</h1>
+            <p>As I sit down to write this, I'm thinking about everything we've been through together: every laugh, every late-night talk, every moment we lifted each other up spiritually, and mentally. Meeting you on Roblox wasn't an accident. It was the start of one of the most beautiful parts of my life.</p>
+            
+            <p>Since around August 25, you have been more than just my girlfriend. You've been my peace, my comfort, my blessing, and the one person who understands me in ways I've never experienced before. Every day with you feels like purpose. Every conversation feels like home.</p>
+            
+            <p>MY LOVE, the truth is words can never fully express how deeply I love you. I try, but it always feels like my heart has more to say than my mouth can speak. You mean so much to me more than I ever expected someone could. You give me strength when I am weak, hope when I feel lost, and love when I least expect it. You've changed me in ways you may never truly understand, and I'm grateful for you every single day.</p>
+            
+            <p>We always ask ourselves<br>"When are we going to see each other?"</p>
+            
+            <p>And each time, I tell you soon, because I mean it with my whole heart. After my GCSE exams, I promise you I will book that plane ticket. I will come to London to finally see you, hold you, and show you in person the love I've been giving you through a screen. And when that day finally comes, everything we waited for will be worth it.</p>
+            
+            <p>Now, on your 16th birthday, I want you to know something special</p>
+            
+            <p>You are loved deeply, truly, endlessly.</p>
+            
+            <p>You are appreciated for who you are and how you love.</p>
+            
+            <p>You are special — not just because of your birthday, but because of the way your heart shines every day.</p>
+            
+            <p>Thank you for being my girl.<br>
+            Thank you for staying by my side.<br>
+            Thank you for loving me the way you do.</p>
+            
+            <p>MY LOVE, I pray this new chapter of your life brings you happiness, growth, and blessings you never saw coming. And I pray that very soon, we share that happiness together in person, not just over calls and messages.</p>
+            
+            <p>Until that day comes, remember this:<br>
+            I love you more than words, more than distance, and more than anything trying to keep us apart. You will always have my heart, today and every day.</p>
+            
+            <p><strong>Happy 16th Birthday, MY LOVE.</strong></p>
+            
+            <p class="signature">From your boy, the one who can't wait to see you soon.</p>
+        </div>
+    </div>
+
+    <button class="music-control" id="musicControl" title="Play/Pause Music">🎵</button>
+
+    <audio id="bgMusic" loop>
+        <source src="say yes to heaven.mp4" type="audio/mp4">
+    </audio>
+
+    <script>
+        const envelopeContainer = document.getElementById('envelopeContainer');
+        const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const letterFullscreen = document.getElementById('letterFullscreen');
+        const musicControl = document.getElementById('musicControl');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        envelopeWrapper.addEventListener('click', function() {
+            // Hide envelope with animation
+            envelopeContainer.classList.add('hidden');
+            
+            // Show full screen letter after envelope disappears
+            setTimeout(() => {
+                letterFullscreen.classList.add('visible');
+                musicControl.classList.add('visible');
+                
+                // Play music
+                bgMusic.play().catch(e => console.log('Audio play failed:', e));
+                isPlaying = true;
+                musicControl.textContent = '⏸️';
+            }, 800);
+        });
+
+        musicControl.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (isPlaying) {
+                bgMusic.pause();
+                this.textContent = '🎵';
+                isPlaying = false;
+            } else {
+                bgMusic.play().catch(e => console.log('Audio play failed:', e));
+                this.textContent = '⏸️';
+                isPlaying = true;
+            }
+        });
+    </script>
+</body>
+</html>
